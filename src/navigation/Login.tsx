@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { LoginForm } from "../interfaces/auth";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { useAuth } from "../hooks/useAuth";
 import { SecureInput } from "../components/SecureInput";
 import { useNavigate } from "react-router-dom";
 
 interface LoginProps {}
 const passwordRules = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/;
-
+const demoEmail = "mymail@mail.com";
+const demoPassword = "Password1@";
 const loginSchema = Yup.object().shape({
   email: Yup.string()
     .email("Correo electrónico inválido")
@@ -28,6 +29,7 @@ const loginSchema = Yup.object().shape({
 
 const Login: React.FC<LoginProps> = ({}) => {
   const { login, isAuthenticated } = useAuth();
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const [loginForm] = useState<LoginForm>({
     email: "",
@@ -35,7 +37,22 @@ const Login: React.FC<LoginProps> = ({}) => {
     confirmPassword: "",
   });
 
-  const handleSubmit = () => login();
+  const handleSubmit = (
+    values: LoginForm,
+    { setSubmitting }: FormikHelpers<LoginForm>
+  ) => {
+    try {
+      if (values.email === demoEmail && values.password === demoPassword) {
+        login();
+      } else {
+        setError("Credenciales inválidas");
+      }
+    } catch (error) {
+      setError("Error al iniciar sesión");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -47,9 +64,7 @@ const Login: React.FC<LoginProps> = ({}) => {
       <Formik
         initialValues={loginForm}
         validationSchema={loginSchema}
-        onSubmit={() => {
-          handleSubmit();
-        }}
+        onSubmit={handleSubmit}
       >
         {({ isSubmitting }) => {
           return (
@@ -81,7 +96,7 @@ const Login: React.FC<LoginProps> = ({}) => {
                   className=""
                 />
               </div>
-
+              {error && <div>{error}</div>}
               <button
                 type="submit"
                 disabled={isSubmitting}

@@ -1,5 +1,6 @@
 import React, { createContext, useState, ReactNode, useEffect } from "react";
 import { User } from "../interfaces/user";
+import { requestLogin } from "../services/auth";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -9,11 +10,7 @@ interface AuthContextType {
   updateUser: (user: User) => void;
   user: User | undefined;
 }
-const demoUser = {
-  id: 1,
-  fullName: "Jose Briceño",
-  email: "jose@mail.com",
-};
+
 export const AuthContext = createContext<AuthContextType | undefined>(
   undefined
 );
@@ -25,13 +22,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const [user, setUser] = useState<User>();
 
   const login = async () => {
-    localStorage.setItem("token", "authtoken");
-    localStorage.setItem("user", JSON.stringify(demoUser));
+    const loginData = requestLogin();
+    localStorage.setItem("token", loginData.token);
+    localStorage.setItem("user", JSON.stringify(loginData.user));
     setIsAuthenticated(true);
-    setUser(demoUser);
+    setUser(loginData.user);
   };
 
-  const logout = () => setIsAuthenticated(false);
+  const logout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+  };
 
   const updateUser = (user: User) => {
     localStorage.setItem("user", JSON.stringify(user));
