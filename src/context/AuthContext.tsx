@@ -1,6 +1,7 @@
 import React, { createContext, useState, ReactNode, useEffect } from "react";
 import { User } from "../interfaces/user";
 import { requestLogin } from "../services/auth";
+import { decrypt, encrypt } from "../helpers";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -22,11 +23,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const [user, setUser] = useState<User>();
 
   const login = async () => {
-    const loginData = requestLogin();
-    localStorage.setItem("token", loginData.token);
-    localStorage.setItem("user", JSON.stringify(loginData.user));
-    setIsAuthenticated(true);
-    setUser(loginData.user);
+    try {
+      const loginData = requestLogin();
+      const encryptedUser = await encrypt(JSON.stringify(loginData.user));
+      const encryptedToken = await encrypt(loginData.token);
+      localStorage.setItem("token", encryptedToken);
+      localStorage.setItem("user", encryptedUser);
+      setIsAuthenticated(true);
+      setUser(loginData.user);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const logout = () => {
@@ -42,11 +49,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const user = localStorage.getItem("user");
+    const encryptedUser = localStorage.getItem("user");
 
-    if (token && user) {
-      setUser(JSON.parse(user));
-      setIsAuthenticated(true);
+    if (token && encryptedUser) {
+      decrypt(encryptedUser).then((decryptedUser) => {
+        setUser(JSON.parse(decryptedUser));
+        setIsAuthenticated(true);
+      });
     }
   }, []);
 
