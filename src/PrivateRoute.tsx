@@ -5,7 +5,7 @@ import { Header } from "./components/Header";
 
 const PrivateRoute: React.FC = ({}) => {
   const { isAuthenticated } = useAuth();
-  console.log("🚀 ~ isAuthenticated:", isAuthenticated);
+
   return isAuthenticated ? (
     <div>
       <Header />

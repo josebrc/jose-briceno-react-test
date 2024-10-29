@@ -12,12 +12,12 @@ const Header: React.FC<HeaderProps> = ({}) => {
 
   return (
     <div>
-      <button onClick={() => navigate("/user")}>
+      <button onClick={() => navigate("/user")} type="button">
         <GoPersonFill />
       </button>
       <div>Bienvenido {user?.fullName}</div>
       <Link to="/products">Productos</Link>
-      <button onClick={logout}>
+      <button onClick={logout} type="button">
         <GoSignOut />
       </button>
     </div>
