@@ -60,7 +60,7 @@ const Login: React.FC<LoginProps> = ({}) => {
     }
   }, [isAuthenticated]);
   return (
-    <div>
+    <div className="login center-content">
       <Formik
         initialValues={loginForm}
         validationSchema={loginSchema}
@@ -68,39 +68,39 @@ const Login: React.FC<LoginProps> = ({}) => {
       >
         {({ isSubmitting }) => {
           return (
-            <Form>
-              <div>
+            <Form className="login-form ">
+              <div className="mb">
                 <label htmlFor="email">Correo Electrónico</label>
-                <Field
-                  type="email"
-                  name="email"
-                  className="border p-2 w-full"
-                />
-                <ErrorMessage name="email" component="div" className="" />
+                <Field type="email" name="email" className="input" />
+                <ErrorMessage name="email" component="div" className="error" />
               </div>
 
-              <div>
+              <div className="mb">
                 <label htmlFor="password">Contraseña</label>
 
                 <SecureInput name="password" />
-                <ErrorMessage name="password" component="div" className="" />
+                <ErrorMessage
+                  name="password"
+                  component="div"
+                  className="error"
+                />
               </div>
 
-              <div>
+              <div className="mb">
                 <label htmlFor="confirmPassword">Confirmar Contraseña</label>
 
                 <SecureInput name="confirmPassword" />
                 <ErrorMessage
                   name="confirmPassword"
                   component="div"
-                  className=""
+                  className="error"
                 />
               </div>
               {error && <div>{error}</div>}
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-blue-500 text-white p-2 rounded"
+                className="button-alt"
               >
                 Iniciar Sesión
               </button>

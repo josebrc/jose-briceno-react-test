@@ -1,0 +1,85 @@
+@import "./assets/styles/colors.scss";
+@import "./assets/styles/utils.scss";
+body {
+  color: $text-color-primary;
+  font-family: "Arial", sans-serif;
+  margin: 0rem 2rem 2rem 2rem;
+  padding: 0;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  border-bottom: solid 1px $light-gray;
+  margin-bottom: 2rem;
+  padding-block: 1rem;
+  padding-inline: 2rem;
+  margin-inline: -2rem;
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 2rem;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+}
+a {
+  color: $text-color-primary;
+  text-decoration: none;
+  border-bottom: solid 1px $text-color-accent;
+  padding-inline: 1rem;
+  padding-bottom: 0.25rem;
+  svg {
+    fill: $text-color-accent;
+  }
+}
+.title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.login {
+  height: 100vh;
+}
+.login-form {
+  border-radius: 1rem;
+  border: solid 1px $light-gray;
+  padding: 2rem;
+  width: 20rem;
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: $dark-gray;
+  }
+}
+
+.secure-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  border: solid 1px $light-gray;
+  border-radius: 0.5rem;
+  padding-inline: 0.5rem;
+  width: 100%;
+  input {
+    border: none;
+    padding-block: 0.5rem;
+    width: 100%;
+  }
+  .icon {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+.error {
+  color: $accent-color-1;
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+}

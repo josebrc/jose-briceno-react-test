@@ -9,13 +9,9 @@ interface SecureInputProps {
 const SecureInput: React.FC<SecureInputProps> = ({ name }) => {
   const [show, setShow] = useState(false);
   return (
-    <div>
-      <Field
-        type={show ? "text" : "password"}
-        name={name}
-        className="border p-2 w-full"
-      />
-      <div>
+    <div className="secure-input">
+      <Field type={show ? "text" : "password"} name={name} className="" />
+      <div className="icon">
         {show ? (
           <GoEyeClosed onClick={() => setShow(!show)} />
         ) : (
