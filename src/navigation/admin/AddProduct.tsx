@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useProducts } from "../../hooks/useProducts";
-import { useParams } from "react-router-dom";
-import { Product as ProductInterface } from "../../interfaces/products";
+
+import { ProductFormValues } from "../../interfaces/products";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { updateProduct } from "../../services/products";
+import { createProduct } from "../../services/products";
+import { useNavigate } from "react-router-dom";
+import { convertFileToBase64 } from "../../helpers";
 
 const ProductSchema = Yup.object().shape({
   title: Yup.string().required("El título es obligatorio"),
@@ -13,30 +15,22 @@ const ProductSchema = Yup.object().shape({
   price: Yup.number()
     .required("El precio es obligatorio")
     .positive("El precio debe ser mayor a 0"),
+  image: Yup.string().required("La imagen es obligatoria"),
 });
 
-interface ProductProps {}
+interface AddProductProps {}
 
-const Product: React.FC<ProductProps> = ({}) => {
-  const { getProductById, editProduct } = useProducts();
-  const { productId } = useParams();
-  const [product, setProduct] = useState<ProductInterface | undefined>(
-    undefined
-  );
-
-  useEffect(() => {
-    if (!productId) return;
-    const response = getProductById(Number(productId));
-    console.log("🚀 ~ useEffect ~ response:", response);
-    if (response) setProduct(response);
-  }, [productId]);
-
-  const handleSubmit = async (values: ProductInterface) => {
+const AddProduct: React.FC<AddProductProps> = ({}) => {
+  const { addProduct } = useProducts();
+  const navigate = useNavigate();
+  const handleSubmit = async (values: ProductFormValues) => {
     try {
-      const updatedProduct = { ...product, ...values };
-      editProduct(updatedProduct); // Llamada a la función para editar el producto
-      await updateProduct(updatedProduct); // Llamada a la función para editar el producto
-      alert("Producto actualizado con éxito");
+      const resp = await createProduct(values);
+      if (resp) {
+        addProduct(resp);
+        alert("Producto actualizado con éxito");
+        navigate("/products");
+      }
     } catch (error) {
       console.log("🚀 ~ handleSubmit ~ error:", error);
     }
@@ -44,25 +38,41 @@ const Product: React.FC<ProductProps> = ({}) => {
 
   return (
     <div className="form-product">
-      <h1>Editar Producto</h1>
+      <h1>Crear Producto</h1>
       <Formik
         initialValues={{
-          id: product?.id ?? 0,
-          title: product?.title ?? "",
-          description: product?.description ?? "",
-          category: product?.category ?? "",
-          price: product?.price ?? 0,
-          image: product?.image ?? "",
-          rating: product?.rating ?? {
-            rate: 0,
-            count: 0,
-          },
+          title: "",
+          price: 0,
+          description: "",
+          category: "",
+          image: "",
         }}
         validationSchema={ProductSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting }) => (
+        {({ setFieldValue, isSubmitting }) => (
           <Form>
+            <div className="mb">
+              <label htmlFor="image">Imagen</label>
+              <input
+                id="image"
+                name="image"
+                type="file"
+                accept="image/*"
+                className="input"
+                onChange={async (
+                  event: React.ChangeEvent<HTMLInputElement>
+                ) => {
+                  const file = event.target.files?.[0];
+                  if (file) {
+                    const base64 = await convertFileToBase64(file);
+                    console.log("🚀 ~ base64:", base64);
+                    setFieldValue("image", base64);
+                  }
+                }}
+              />
+              <ErrorMessage name="image" component="div" className="error" />
+            </div>
             <div className="mb">
               <label htmlFor="title">Título</label>
               <Field name="title" type="text" className="input" />
@@ -106,4 +116,4 @@ const Product: React.FC<ProductProps> = ({}) => {
     </div>
   );
 };
-export { Product };
+export { AddProduct };

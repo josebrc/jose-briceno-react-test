@@ -46,14 +46,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  gap: 0.5rem;
   height: 2.5rem;
+  padding-inline: 1rem;
+  margin-block: 1rem;
   background-color: $accent-color-1;
   color: $white;
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  font-weight: bold;
+
   transition: background-color 0.3s;
   &:hover {
     background-color: $accent-color-1;
@@ -69,7 +71,9 @@
   border-radius: 0.5rem;
   padding-inline: 0.5rem;
 }
-
+textarea {
+  min-height: 5rem;
+}
 .cursor-pointer {
   cursor: pointer;
 }

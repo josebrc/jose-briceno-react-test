@@ -6,6 +6,7 @@ import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { SecureInput } from "../components/SecureInput";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { GoSignIn } from "react-icons/go";
 
 interface LoginProps {}
 const passwordRules = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/;
@@ -98,13 +99,15 @@ const Login: React.FC<LoginProps> = ({}) => {
                 />
               </div>
               {error && <div>{error}</div>}
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="button-alt"
-              >
-                Iniciar Sesión
-              </button>
+              <div className="w-full flex justify-center">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="button-alt"
+                >
+                  Iniciar Sesión <GoSignIn size={20} />
+                </button>
+              </div>
             </Form>
           );
         }}
