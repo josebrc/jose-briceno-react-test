@@ -1,15 +1,19 @@
 import React from "react";
-import { useAuth } from "./hooks/useAuth";
+
 import { Navigate, Outlet } from "react-router-dom";
 import { Header } from "./components/Header";
+import { ProductProvider } from "./context/ProductsContext";
+import { useAuth } from "./hooks/useAuth";
 
 const PrivateRoute: React.FC = ({}) => {
   const { isAuthenticated } = useAuth();
 
   return isAuthenticated ? (
     <div>
-      <Header />
-      <Outlet />
+      <ProductProvider>
+        <Header />
+        <Outlet />
+      </ProductProvider>
     </div>
   ) : (
     <Navigate to="/login" />

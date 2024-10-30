@@ -1,5 +1,7 @@
 @import "./assets/styles/colors.scss";
 @import "./assets/styles/utils.scss";
+@import "./assets/styles/modal.scss";
+@import "./assets/styles/table.scss";
 body {
   color: $text-color-primary;
   font-family: "Arial", sans-serif;
@@ -49,12 +51,6 @@ a {
   border: solid 1px $light-gray;
   padding: 2rem;
   width: 20rem;
-  label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: $dark-gray;
-  }
 }
 
 .secure-input {
@@ -82,4 +78,23 @@ a {
   color: $accent-color-1;
   font-size: 0.75rem;
   margin-top: 0.5rem;
+}
+
+.search {
+  width: 100%;
+  margin: 2rem auto;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: $dark-gray;
+}
+
+@media (min-width: 768px) {
+  .search {
+    max-width: 50%;
+
+    margin: 2rem 0;
+  }
 }
