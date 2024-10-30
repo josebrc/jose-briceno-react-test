@@ -28,7 +28,7 @@ const User: React.FC<UserProps> = ({}) => {
     }
   };
   return (
-    <div>
+    <div className="w-full flex justify-center">
       {user && (
         <Formik
           initialValues={user}
@@ -37,20 +37,26 @@ const User: React.FC<UserProps> = ({}) => {
         >
           {({ isSubmitting }) => {
             return (
-              <Form>
-                <div>
+              <Form className="login-form ">
+                <div className="mb">
                   <label htmlFor="fullName">Full Name</label>
-                  <Field type="text" name="fullName" />
+                  <Field type="text" name="fullName" className="input" />
                   <ErrorMessage name="fullName" component="div" />
                 </div>
-                <div>
+                <div className="mb">
                   <label htmlFor="email">Email</label>
-                  <Field type="email" name="email" />
+                  <Field type="email" name="email" className="input" />
                   <ErrorMessage name="email" component="div" />
                 </div>
-                <button type="submit" disabled={isSubmitting}>
-                  Submit
-                </button>
+                <div className="w-full flex justify-center">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="button-alt"
+                  >
+                    Submit
+                  </button>
+                </div>
               </Form>
             );
           }}

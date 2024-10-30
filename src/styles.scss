@@ -21,11 +21,37 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 2rem;
-    height: 2rem;
+    padding: 0.5rem;
     background-color: transparent;
     border: none;
     cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 400;
+    background-color: $accent-color-3;
+    border-radius: 0.5rem;
+
+    &:hover {
+      background-color: $accent-color-3;
+      border-radius: 0.5rem;
+    }
+  }
+  .modal-actions {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .button {
+    background-color: $accent-color-2;
+    color: $white;
+    gap: 0.5rem;
+    height: 2.5rem;
+    padding-inline: 1rem;
+    margin-block: 1rem;
+  }
+  .button-alt {
+    background-color: $accent-color-1;
   }
 }
 a {
